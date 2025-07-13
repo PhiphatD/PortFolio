@@ -105,18 +105,31 @@
       z-index: 0;
     }
     .hero-content {
-      position: relative;
-      z-index: 1;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s cubic-bezier(.77,0,.18,1), transform 0.8s cubic-bezier(.77,0,.18,1);
+    }
+    .hero-content.hero-visible {
+      opacity: 1;
+      transform: translateY(0);
     }
     .hero h1 {
       font-size: 3.2rem;
-      background: linear-gradient(to right, var(--primary), var(--accent));
+      background: linear-gradient(90deg, #23222a 0%, #7e5ce5 40%, #5b9dfb 75%, #55cfff 100%);
+      background-size: 200% auto;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       font-weight: 700;
       margin-bottom: 0.5rem;
       position: relative;
     }
+    body.dark-mode .hero h1 {
+      background: linear-gradient(90deg, #f9f9f9 0%, #7e5ce5 40%, #5b9dfb 75%, #55cfff 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
     #cursor {
       display: inline-block;
       font-size: 1.1em;
@@ -133,12 +146,29 @@
     }
     .hero h2 {
       color: var(--accent);
-      margin-bottom: 1.2rem;
+      margin-bottom: 0.6rem;
+      background: linear-gradient(90deg, #7f5af0, #7f5af0, #7f5af0);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    body.dark-mode .hero h2 {
+      background: linear-gradient(90deg, #fff, #58a6ff, #7f5af0);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero h3 {
+      font-size: 1.15rem;
+      color: #567ee8;
+      font-weight: 600;
+      margin-bottom: 1.3rem;
+      letter-spacing: 0.5px;
     }
     .hero p {
       max-width: 640px;
       color: inherit;
-      font-size: 1.1rem;
+      font-size: 0.9rem;
       margin-bottom: 2rem;
     }
     .hero-buttons {
@@ -186,7 +216,7 @@
 </head>
 <body>
   <header>
-    <div class="logo">Phiphat</div>
+    <div class="logo">Phiphat D.</div>
     <nav>
       <a href="#home" class="active">Home</a>
       <a href="#about">About</a>
@@ -201,8 +231,9 @@
       <canvas id="bg-canvas"></canvas>
       <div class="hero-content">
         <h1><span id="typed-name"></span><span id="cursor">|</span></h1>
-        <h2>AI Engineer & Solution Architect</h2>
-        <p>Creating next-gen AI platforms and intelligent architecture that transform businesses.</p>
+        <h2>Aspiring Data Analyst & AI Engineer</h2>
+        <h3>(Internship Seeking | Business Intelligence | AI & Data Science)</h3>
+        <p>I'm a driven IT student with a strong foundation in data analysis, business intelligence, and AI technologies. Currently seeking internship opportunities to apply my technical skills, analytical thinking, and passion for problem-solving in real-world projects.</p>
         <div class="hero-buttons">
           <button>📄 Download CV</button>
         </div>
@@ -220,7 +251,7 @@
   </main>
 
   <script>
-    const names = ["พิพัฒน์", "Phiphat", "สวัสดี", "Hello"];
+    const names = ["สวัสดีครับ ผมพิพัฒน์", "Hello, I'm Phiphat D."];
     let nameIdx = 0, charIdx = 0, isDeleting = false;
     const el = document.getElementById("typed-name");
     function typeLoop() {
@@ -251,10 +282,27 @@
     const modeIcon = document.getElementById("mode-icon");
     let isDark = false;
     function setIconSVG(dark) {
-      modeIcon.innerHTML = dark
-        ? `<svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="9" fill="#FFD600"/><circle cx="16" cy="16" r="7" fill="#333"/></svg>`
-        : `<svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="9" fill="#FFD600"/><g><circle cx="16" cy="16" r="9" fill="#f9f9f9" fill-opacity="0.45"/></g></svg>`;
-    }
+    modeIcon.innerHTML = dark
+      // 🌙 พระจันทร์เสี้ยว
+      ? `<svg viewBox="0 0 32 32" width="26" height="26" fill="none">
+          <path d="M26 20.5A12 12 0 0112.5 6c0-.5.4-.9.9-.8A10.5 10.5 0 1026.8 19.6c.1.5-.3.9-.8.9z" fill="#FFD600"/>
+          <path d="M26 20.5A12 12 0 0112.5 6c0-.5.4-.9.9-.8A10.5 10.5 0 1026.8 19.6c.1.5-.3.9-.8.9z" fill="#333" fill-opacity="0.15"/>
+        </svg>`
+      // ☀️ พระอาทิตย์
+      : `<svg viewBox="0 0 32 32" width="26" height="26" fill="none">
+          <circle cx="16" cy="16" r="8" fill="#FFD600"/>
+          <g stroke="#FFD600" stroke-width="2">
+            <line x1="16" y1="2" x2="16" y2="7"/>
+            <line x1="16" y1="25" x2="16" y2="30"/>
+            <line x1="2" y1="16" x2="7" y2="16"/>
+            <line x1="25" y1="16" x2="30" y2="16"/>
+            <line x1="6.2" y1="6.2" x2="10" y2="10"/>
+            <line x1="22" y1="22" x2="25.8" y2="25.8"/>
+            <line x1="22" y1="10" x2="25.8" y2="6.2"/>
+            <line x1="10" y1="22" x2="6.2" y2="25.8"/>
+          </g>
+        </svg>`;
+  }
     setIconSVG(isDark);
     modeIcon.addEventListener("click", function() {
       isDark = !isDark;
@@ -321,6 +369,12 @@
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     });
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        document.querySelector('.hero-content').classList.add('hero-visible');
+      }, 250); // ใส่ delay เล็กน้อยให้ดูนุ่มนวล
+    });
+    
   </script>
 </body>
 </html>
