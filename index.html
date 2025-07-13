@@ -202,6 +202,18 @@
     #scroll-arrow {
       opacity: 1;
       transition: opacity 0.6s ease-in-out;
+      position: relative;
+      display: inline-block;
+      animation: floatArrow 2s ease-in-out infinite;
+      transition: opacity 0.6s ease-in-out;
+    }
+    @keyframes floatArrow {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(10px);
+      }
     }
     #scroll-arrow svg {
       margin: auto;
@@ -213,7 +225,7 @@
     }
     .about-me {
       opacity: 0;
-      transform: translateY(70px);
+      transform: translateY(30px);
       transition: opacity 0.85s cubic-bezier(.66,.11,.42,1), transform 0.85s cubic-bezier(.66,.11,.42,1);
       pointer-events: none;
     }
@@ -233,7 +245,7 @@
     }
     .about-pic {
       width: 350px;
-      height: 800px;
+      height: 900px;
       border-radius: 22px;
       object-fit: cover;
       box-shadow: 0 2px 32px 0 rgba(127,90,240,0.11);
@@ -329,10 +341,95 @@
         box-shadow: 0 8px 24px rgba(0,0,0,0.32);
       }
     }
+    #scroll-circle {
+      animation: upDown 1s ease-in-out infinite alternate;
+    }
+
+    @keyframes upDown {
+      0% {
+        cy: 10;
+        transform: translateY(0);
+      }
+      100% {
+        cy: 18;  /* ลดจาก 28 เป็น 18 เพื่อไม่ให้เลยกรอบ */
+        transform: translateY(8px); /* ลดการเลื่อนลง */
+      }
+    }
+    .experience-section {
+      max-width: 900px;
+      margin: auto;
+      padding: 2rem 1rem;
+    }
+    .experience-section h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 2rem;
+      color: var(--primary);
+    }
+    .timeline {
+      position: relative;
+      margin-left: 20px;
+      border-left: 2px solid var(--primary);
+      padding-left: 20px;
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 2rem;
+    }
+    .timeline-dot {
+      position: absolute;
+      left: -12px;
+      top: 0;
+      width: 16px;
+      height: 16px;
+      background: var(--primary);
+      border-radius: 50%;
+      border: 2px solid white;
+    }
+    .timeline-content h3 {
+      margin: 0;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .timeline-content .date {
+      font-size: 0.9rem;
+      color: #888;
+      margin-bottom: 0.5rem;
+    }
+    .timeline-content p {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.4;
+      color: var(--text-light);
+    }
+    body.dark-mode .timeline-content p {
+      color: var(--text-dark);
+    }
+    .timeline-item {
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: all 0.6s ease-out;
+    }
+    .timeline-item.show {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    #scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #7f5af0, #58a6ff);
+      width: 0%;
+      z-index: 9999;
+      transition: width 0.2s ease-out;
+    }
+
 
   </style>
 </head>
 <body>
+  <div id="scroll-progress"></div>
   <header>
   <div class="logo">Phiphat D.</div>
     <nav id="main-nav">
@@ -364,12 +461,9 @@
         <div id="scroll-arrow">
           <svg width="28" height="50" fill="none" stroke="#aaa" stroke-width="2">
             <rect x="4" y="1" width="20" height="36" rx="12" stroke="#aaa" fill="none"/>
-            <circle cx="14" cy="10" r="3" fill="#7f5af0">
-              <animate attributeName="cy" from="10" to="28" dur="1.2s" repeatCount="indefinite" />
-            </circle>
+            <circle id="scroll-circle" cx="14" cy="10" r="3" fill="#7f5af0" />
           </svg>
           <div>Scroll to explore</div>
-        </div>
       </div>
     </section>
     <section class="about-me" id="about">
@@ -385,15 +479,6 @@
             <li><b>Phone:</b> 080 334 0674</li>
             <li><b>Email:</b> Phiphat.deep@gmail.com</li>
             <li><b>Address:</b> 38/48 Pruksa Village 119, Khlong Song, Khlong Luang, Pathum Thani 12120, Thailand</li>
-            <li><b>GitHub:</b>
-              <a href="https://github.com/PhiphatD" target="_blank" aria-label="GitHub PhiphatD">
-                <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/github.svg" alt="GitHub" style="width:20px; vertical-align: middle; margin-left: 6px; filter: var(--github-filter);">
-              </a>
-            </li>
-          </ul>
-
-          <h4>🎓 Education</h4>
-          <ul>
             <li><b>High School:</b> Suwanplubpla Phitthayakhom School <br> (Science-Math program) – GPA: 3.42</li>
             <li><b>Currently:</b> Bangkok University <br> Major in Computer Science – GPA: 3.61</li>
           </ul>
@@ -403,7 +488,11 @@
             <li><b>Programming Languages:</b> Java, Python, Flutter, SQL, Firebase</li>
             <li><b>Tools & Platforms:</b> Excel, VS Code, NetBeans, Android Studio, Weka, Figma</li>
             <li><b>AI & Data Expertise:</b> Tokenization, Clustering, RNN, AI Automation</li>
-            <li><b>Others:</b> Github, Android, IOS</li>
+            <li><b>Others:</b> 
+              <a href="https://github.com/PhiphatD" target="_blank" aria-label="GitHub PhiphatD">
+                <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/github.svg" alt="GitHub" style="width:20px; vertical-align: middle; margin-left: 6px; filter: var(--github-filter);">
+              </a>
+            </li>
           </ul>
 
           <h4>🌐 Languages</h4>
@@ -414,6 +503,28 @@
         </div>
       </div>
     </section>
+    <section id="experience" class="experience-section">
+      <h2>Experience</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <h3>Internship at XYZ Company</h3>
+            <span class="date">June 2023 - August 2023</span>
+            <p>Worked on data analysis and machine learning projects...</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <h3>Part-time Developer at ABC Corp</h3>
+            <span class="date">January 2022 - May 2023</span>
+            <p>Developed web applications and collaborated with cross-functional teams...</p>
+          </div>
+        </div>
+        <!-- เพิ่ม item ตามต้องการ -->
+      </div>
+    </section>
     <style>
       :root {
       --github-filter: invert(0);
@@ -421,6 +532,7 @@
       body.dark-mode {
         --github-filter: invert(1);
       }
+      
     </style>
     </main>
   <script>
@@ -439,7 +551,6 @@
         }
       }
 
-      // arrow fade toggle
       if (scrollArrow) {
         const scrollY = window.scrollY || document.documentElement.scrollTop;
         if (scrollY > 30) {
@@ -451,9 +562,10 @@
         }
       }
 
-      // navbar active highlight
       const navLinks = document.querySelectorAll('nav a');
-      let fromTop = window.scrollY + 120;
+      const offset = 120; // header height (ปรับได้)
+      let fromTop = window.scrollY + offset;
+
       navLinks.forEach(link => {
         if (!link.hash) return;
         const section = document.querySelector(link.hash);
@@ -464,8 +576,24 @@
       });
     }
 
+    document.querySelectorAll('nav a').forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const targetId = link.getAttribute('href').substring(1);
+        const targetSection = document.getElementById(targetId);
+        if (targetSection) {
+          const offset = 120; // header height
+          window.scrollTo({
+            top: targetSection.offsetTop - offset,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
 
-    window.addEventListener("scroll", handlePageScroll);
+    window.addEventListener('scroll', handlePageScroll);
+    window.addEventListener('load', handlePageScroll);
+
 
     // =============== DOMContentLoaded Handler ===============
     window.addEventListener('DOMContentLoaded', () => {
@@ -491,7 +619,7 @@
     });
 
     // =============== Typed Name Animation ===============
-    const names = ["สวัสดีครับ ผมพิพัฒน์", "Hello, I'm Phiphat D."];
+    const names = ["สวัสดีครับ, ผมชื่อ พิพัฒน์", "Hello, I'm Phiphat D."];
     let nameIdx = 0, charIdx = 0, isDeleting = false;
     const el = document.getElementById("typed-name");
     function typeLoop() {
@@ -678,6 +806,28 @@
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     });
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    function revealOnScroll() {
+      const triggerBottom = window.innerHeight * 0.85;
+      timelineItems.forEach(item => {
+        const itemTop = item.getBoundingClientRect().top;
+        if (itemTop < triggerBottom) {
+          item.classList.add('show');
+        } else {
+          item.classList.remove('show');
+        }
+      });
+    }
+    window.addEventListener('scroll', revealOnScroll);
+    revealOnScroll();
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = (scrollTop / docHeight) * 100;
+      const progressBar = document.getElementById('scroll-progress');
+      progressBar.style.width = scrollPercent + '%';
+    });
+
   </script>
 </body>
 </html>
