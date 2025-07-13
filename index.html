@@ -212,17 +212,108 @@
       color: #888;
       margin-top: 0.5rem;
     }
+    .about-me {
+      padding: 4rem 0 2rem 0;
+      background: #fff;
+    }
+    .about-container {
+      max-width: 950px;
+      margin: auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: 3rem;
+      justify-content: center;
+    }
+    .about-pic {
+      width: 250px;
+      height: 250px;
+      border-radius: 22px;
+      object-fit: cover;
+      box-shadow: 0 2px 32px 0 rgba(127,90,240,0.11);
+    }
+    .about-detail {
+      flex: 1;
+      min-width: 270px;
+      text-align: left;
+    }
+    .about-detail h2 {
+      font-size: 2.2rem;
+      margin-bottom: 0.5rem;
+      letter-spacing: 1px;
+      font-weight: 700;
+      border-bottom: 2px solid #7f5af0;
+      display: inline-block;
+    }
+    .about-detail h2 span {
+      color: #7f5af0;
+      font-size: 1rem;
+      font-weight: 400;
+      margin-left: 16px;
+    }
+    .about-detail .highlight {
+      color: #e1568d;
+    }
+    .about-detail ul {
+      margin: 1.5rem 0 1rem 1rem;
+      padding-left: 0;
+    }
+    .about-detail li {
+      font-size: 1.05rem;
+      margin-bottom: 0.5rem;
+    }
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 36px; width: 36px;
+      cursor: pointer;
+      margin-left: 1rem;
+    }
+    .hamburger span {
+      display: block;
+      height: 3.5px;
+      width: 24px;
+      margin: 3px 0;
+      background: #7f5af0;
+      border-radius: 2px;
+      transition: 0.32s;
+    }
+    @media (max-width: 900px) {
+      nav a, .toggle-mode { display: none; }
+      .hamburger { display: flex; }
+      nav.open a, nav.open .toggle-mode { display: block; }
+      nav.open {
+        position: absolute;
+        top: 58px; right: 24px;
+        background: #fff;
+        box-shadow: 0 8px 24px rgba(127,90,240,0.09);
+        border-radius: 14px;
+        padding: 1.1rem 1.5rem;
+        display: flex; flex-direction: column;
+        z-index: 1111;
+        min-width: 180px;
+        gap: 0.4rem;
+      }
+    }
+
   </style>
 </head>
 <body>
   <header>
     <div class="logo">Phiphat D.</div>
-    <nav>
+    <nav id="main-nav">
       <a href="#home" class="active">Home</a>
       <a href="#about">About</a>
       <a href="#experience">Experience</a>
       <a href="#contact">Contact</a>
       <button class="toggle-mode" id="mode-icon" aria-label="Toggle dark mode"></button>
+      <button class="hamburger" id="hamburger-btn" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
     </nav>
   </header>
 
@@ -248,9 +339,46 @@
         </div>
       </div>
     </section>
+    <section class="about-me" id="about">
+  <div class="about-container">
+      <img src="aboutme.jpg" alt="Profile" class="about-pic" />
+      <div class="about-detail">
+        <h2>ABOUT ME <span>WHO I AM</span></h2>
+        <h3>I'm Phiphat and I'm a <span class="highlight">Developer</span>!</h3>
+        <ul>
+          <li><b>ชื่อ:</b> พิพัฒน์</li>
+          <li><b>Email:</b> your@email.com</li>
+          <li><b>Phone:</b> 081-xxx-xxxx</li>
+          <!-- เพิ่มข้อมูลอื่นๆ ได้ -->
+        </ul>
+        <h4>ประสบการณ์/การศึกษา...</h4>
+      </div>
+    </div>
+  </section>
   </main>
 
   <script>
+    // Hamburger toggle
+    const hamburger = document.getElementById("hamburger-btn");
+    const nav = document.getElementById("main-nav");
+    hamburger.addEventListener("click", function() {
+      nav.classList.toggle('open');
+      // ปิดเมนูอัตโนมัติเมื่อเลือก link
+      nav.querySelectorAll("a").forEach(a => {
+        a.onclick = () => nav.classList.remove('open');
+      });
+    });
+    const navLinks = document.querySelectorAll('nav a');
+    window.addEventListener('scroll', () => {
+      let fromTop = window.scrollY + 120;
+      navLinks.forEach(link => {
+        let section = document.querySelector(link.hash);
+        if (section && section.offsetTop <= fromTop && section.offsetTop + section.offsetHeight > fromTop) {
+          navLinks.forEach(l => l.classList.remove('active'));
+          link.classList.add('active');
+        }
+      });
+    });
     const names = ["สวัสดีครับ ผมพิพัฒน์", "Hello, I'm Phiphat D."];
     let nameIdx = 0, charIdx = 0, isDeleting = false;
     const el = document.getElementById("typed-name");
@@ -278,7 +406,7 @@
       }
     }
     typeLoop();
-
+    
     const modeIcon = document.getElementById("mode-icon");
     let isDark = false;
     function setIconSVG(dark) {
@@ -318,7 +446,7 @@
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     const particles = [];
-
+    
     for (let i = 0; i < 60; i++) {
       particles.push({
         x: Math.random() * canvas.width,
@@ -328,9 +456,84 @@
         dy: (Math.random() - 0.5) * 1.2,
       });
     }
+    class FloatingShape {
+      constructor(type, x, y, size, color, dx, dy, rotate, dr) {
+        this.type = type; // "circle" or "triangle"
+        this.x = x;
+        this.y = y;
+        this.size = size;
+        this.color = color;
+        this.dx = dx;
+        this.dy = dy;
+        this.rotate = rotate || 0;
+        this.dr = dr || 0;
+      }
+      draw(ctx) {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.rotate);
+        ctx.globalAlpha = 0.23;
+        ctx.strokeStyle = this.color;
+        ctx.fillStyle = this.color;
+        if (this.type === "circle") {
+          ctx.beginPath();
+          ctx.arc(0, 0, this.size, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+        if (this.type === "triangle") {
+          ctx.beginPath();
+          let h = this.size * Math.sqrt(3) / 2;
+          ctx.moveTo(-this.size/2, h/2);
+          ctx.lineTo(this.size/2, h/2);
+          ctx.lineTo(0, -h/2);
+          ctx.closePath();
+          ctx.stroke();
+        }
+        ctx.restore();
+        ctx.globalAlpha = 1;
+      }
+      update(canvas) {
+        this.x += this.dx;
+        this.y += this.dy;
+        this.rotate += this.dr;
+        if (this.x < -100) this.x = canvas.width+80;
+        if (this.x > canvas.width+100) this.x = -80;
+        if (this.y < -100) this.y = canvas.height+80;
+        if (this.y > canvas.height+100) this.y = -80;
+      }
+    }
 
+    // ----- สร้างวงกลม-สามเหลี่ยมลอย -----
+    const shapes = [];
+    const shapeColors = ["#7f5af0", "#58a6ff", "#c5caff", "#b1ffe7"];
+
+    for(let i=0; i<6; i++) { // 3 วงกลม
+      shapes.push(new FloatingShape(
+        "circle",
+        Math.random()*canvas.width,
+        Math.random()*canvas.height,
+        45+Math.random()*30,
+        shapeColors[Math.floor(Math.random()*shapeColors.length)],
+        (Math.random()-0.5)*0.3, (Math.random()-0.5)*0.3,
+        0, (Math.random()-0.5)*0.005
+      ));
+    }
+    for(let i=0; i<4; i++) { // 2 สามเหลี่ยม
+      shapes.push(new FloatingShape(
+        "triangle",
+        Math.random()*canvas.width,
+        Math.random()*canvas.height,
+        60+Math.random()*20,
+        shapeColors[Math.floor(Math.random()*shapeColors.length)],
+        (Math.random()-0.5)*0.22, (Math.random()-0.5)*0.22,
+        Math.random()*Math.PI, (Math.random()-0.5)*0.008
+      ));
+    }
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      shapes.forEach(shape => shape.draw(ctx));
+
       for (let p of particles) {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
@@ -340,6 +543,7 @@
     }
 
     function update() {
+      shapes.forEach(shape => shape.update(canvas));
       for (let p of particles) {
         p.x += p.dx;
         p.y += p.dy;
