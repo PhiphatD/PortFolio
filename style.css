@@ -260,6 +260,7 @@
       pointer-events: auto;
     }
     .about-container {
+      margin-left: 100px;
       max-width: 950px;
       margin: auto;
       display: flex;
