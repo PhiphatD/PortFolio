@@ -623,6 +623,15 @@ body.dark-mode .blog-title {
   /* สีหลักในโหมดมืด */
   color: var(--text-dark);
 }
+
+.blog-subtitle {
+  margin-top: 0.3rem;
+  color: var(--meta-dark); /* สีรองในโหมดสว่าง */
+  transition: color 0.3s; /* เปลี่ยนสีเมื่อ hover */
+}
+.blog-title:hover .blog-subtitle {
+  color: var(--meta-light); /* เปลี่ยนสีเมื่อ hover */
+}
 .meta-info .meta-item {
   position: relative;
   padding-left: 0.8rem;     /* เว้นขอบให้จุดแสดง */
