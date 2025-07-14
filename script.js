@@ -331,3 +331,17 @@
       setTimeout(() => modeIcon.classList.remove('rotating'), 450);
     }
   });
+  document.addEventListener("DOMContentLoaded", () => {
+    const slideshows = document.querySelectorAll('.img-wrap.slideshow');
+
+    slideshows.forEach(slideshow => {
+      const slides = slideshow.querySelectorAll('.slide');
+      let index = 0;
+
+      setInterval(() => {
+        slides[index].classList.remove('show');
+        index = (index + 1) % slides.length;
+        slides[index].classList.add('show');
+      }, 4000); // เปลี่ยนรูปทุก 4 วินาที
+    });
+  });

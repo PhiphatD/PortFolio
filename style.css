@@ -508,6 +508,8 @@ body.dark-mode .blog-header h2 {
   position: relative;
   border-radius: 1.5rem;
   overflow: hidden;
+  aspect-ratio: unset; /* ยกเลิกการบังคับอัตราส่วน */
+  height: auto;
 }
 .img-wrap .bg-shape {
   position: absolute;
@@ -521,12 +523,41 @@ body.dark-mode .blog-header h2 {
 }
 .img-wrap img {
   display: block;
-  width: 100%;
-  aspect-ratio: 4/3;
+  position: relative;
+  width: 180%;
+  height: 300px;
+  aspect-ratio: 8/3;
   object-fit: cover;
+  object-position: left 55%;
   border-radius: 1.5rem;     
   transition: transform 0.35s;
 }
+.img-wrap.slideshow {
+  position: relative;
+  height: 300px;
+  width: 300px;
+  overflow: hidden;
+  border-radius: 1.5rem;
+}
+
+.img-wrap.slideshow .slide {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  z-index: 0;
+  border-radius: 1.5rem;
+}
+
+.img-wrap.slideshow .slide.show {
+  opacity: 1;
+  z-index: 1;
+}
+
 .card-arrow {
   position: absolute;
   bottom: 1rem;
